@@ -55,25 +55,25 @@ logwage:
 
 Data was manually assembled by Steve Miller, of Open BI (www.openbi.com), from the March 2011 Supplement to Current Population Survey data.
 
-
 ```{r}
 fit = lm(wage~poly(age,4), data=Wage)
 coef(summary(fit))
 ```
-Use 'lm' function to create a linear model that predicts wage using a fourth-degree polynomial of age. *Each column in returned matrix is a linear combination of the variables age, age^2, age^3, age^4.???
-*Contains four terms: age, age^2, age^3, age^4.
-estimated four parameters (beta coeff)
+Use 'lm' function to create a linear model that predicts wage using a fourth-degree polynomial of age. 
+This is orthogonal (each term was produced in a matter to not have any correlation with each other).
+Contains four terms: age, age^2, age^3, age^4.
+
 ```{r, echo=FALSE}
 fit2 = lm(wage~poly(age,4,raw=T), data=Wage)
 coef(summary(fit2))
 ```
-This is the direct way to obtain each degree. Notice the coefficients are different but the fitted values in the end will not vary
-Raw means non-orthongianl
+This is the direct way to obtain each degree. Notice the coefficients are different but the fitted values in the end will not vary.
+Raw means non-orthogonal. 
 ```{r}
 fit2a = lm(wage~age+I(age^2)+I(age^3)+I(age^4), data=Wage)
 coef(fit2a)
 ```
-I() isolates features to create the same estimates as using 'raw = True'.
+I() isolates terms to create the same estimates as using 'raw = True'.
 
 ```{r}
 fit2b = lm(wage~cbind(age,age^2,age^3,age ^4), data=Wage)
@@ -81,7 +81,8 @@ coef(fit2b)
 ```
 A more compact way compared to using the 'I()'. 'cbind()' functions as a wrapper 
 producing the same results.
-non-orthongonalalalala
+Also, non-orthogonal.
+
 ```{r}
 agelims  = range(age)
 age.grid = seq(from=agelims[1], to=agelims[2])
@@ -152,7 +153,7 @@ Here we are creating predictions based off of the age list created earlier (18->
 and using the new generalized linear model. 
 
 ```{r}
-pfit = exp(preds$fit )/(1+exp(preds$fit ))
+pfit = exp(preds$fit)/(1+exp(preds$fit))
 se.bands.logit = cbind(preds$fit +2* preds$se.fit , preds$fit -2*preds$se.fit)
 se.bands = exp(se.bands.logit)/(1+exp(se.bands.logit))
 ```

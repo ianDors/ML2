@@ -103,5 +103,3 @@ matlines(dispList, se.bands, lwd=1, col="red", lty=3)
 ```
 Showing the predictions and 95% CI for the four bins. Notice the distance between 
 the predictions and intervals as data becomes more sparse (larger SE).
-
-
